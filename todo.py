@@ -1,7 +1,7 @@
 import os
 
 from sanic import Sanic
-from sanic.response import json, text
+from sanic.response import HTTPResponse, json, text
 from tinydb import TinyDB, Query
 
 
@@ -9,6 +9,15 @@ BASE_URL = 'http://todo-backend-sanic.herokuapp.com/todo'
 
 app = Sanic('todo')
 db = TinyDB('todos.json')
+
+@app.middleware('response')
+async def cors_headers(request, response):
+    cors_headers = {
+        'access-control-allow-origin': '*',
+        'access-control-allow-headers': '*'
+    }
+    response.headers = cors_headers
+    return response
 
 def make_todo(todo):
     return dict(
