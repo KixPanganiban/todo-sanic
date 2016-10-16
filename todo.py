@@ -48,7 +48,8 @@ async def handle_collection(request):
     def handle_delete():
         eids = map(lambda t: t.eid, db.all())
         db.remove(eids=eids)
-        return text('[]')
+        return text('[]',
+            headers={'Content-Type': 'application/json; charset=utf-8'})
 
     if request.method == 'GET':
         return handle_get()
@@ -82,7 +83,8 @@ async def handle_single(request, id):
         if todo is None:
             return text('todo not found', 404)
         db.remove(eids=[id])
-        return text('{}')
+        return text('{}',
+            headers={'Content-Type': 'application/json; charset=utf-8'})
 
     if request.method == 'GET':
         return handle_get(id)
