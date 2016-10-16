@@ -17,7 +17,7 @@ async def cors_headers(request, response):
         'access-control-allow-headers': 'Accept, Content-Type',
         'access-control-allow-methods': '*'
     }
-    if response.headers is None:
+    if response.headers is None or isinstance(response.headers, list):
         response.headers = cors_headers
     elif isinstance(response.headers, dict):
         response.headers.update(cors_headers)
@@ -48,8 +48,8 @@ async def handle_collection(request):
     def handle_delete():
         eids = map(lambda t: t.eid, db.all())
         db.remove(eids=eids)
-        return text('[]',
-            headers={'Content-Type': 'application/json; charset=utf-8'})
+        return HTTPResponse('[]',
+            content_type='application/json; charset=utf-8')
 
     if request.method == 'GET':
         return handle_get()
@@ -83,8 +83,8 @@ async def handle_single(request, id):
         if todo is None:
             return text('todo not found', 404)
         db.remove(eids=[id])
-        return text('{}',
-            headers={'Content-Type': 'application/json; charset=utf-8'})
+        return HTTPResponse('{}',
+            content_type='application/json; charset=utf-8')
 
     if request.method == 'GET':
         return handle_get(id)
