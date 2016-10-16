@@ -14,7 +14,8 @@ db = TinyDB('todos.json')
 async def cors_headers(request, response):
     cors_headers = {
         'access-control-allow-origin': '*',
-        'access-control-allow-headers': '*'
+        'access-control-allow-headers': 'Accept, Content-Type',
+        'access-control-allow-methods': '*'
     }
     if response.headers is None:
         response.headers = cors_headers
