@@ -16,7 +16,10 @@ async def cors_headers(request, response):
         'access-control-allow-origin': '*',
         'access-control-allow-headers': '*'
     }
-    response.headers = cors_headers
+    if response.headers is None:
+        response.headers = cors_headers
+    elif isinstance(response.headers, dict):
+        response.headers.update(cors_headers)
     return response
 
 def make_todo(todo):
@@ -52,6 +55,8 @@ async def handle_collection(request):
         return handle_post(request.json)
     elif request.method == 'DELETE':
         return handle_delete()
+    elif request.method == 'OPTION' or request.method == 'OPTIONS':
+        return HTTPResponse(status=204, headers={'Allow': 'GET, POST, DELETE'})
     else:
         return text('GET/POST/DELETE', 405)
 
@@ -84,6 +89,8 @@ async def handle_single(request, id):
         return handle_patch(request.json, id)
     elif request.method == 'DELETE':
         return handle_delete(id)
+    elif request.method == 'OPTION' or request.method == 'OPTIONS':
+        return HTTPResponse(status=204, headers={'Allow': 'GET, PATCH, DELETE'})
     else:
         return text('GET/PATCH/DELETE', 405)
 
