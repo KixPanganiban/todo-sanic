@@ -1,7 +1,9 @@
-from tinydb import TinyDB, Query
+import os
 
 from sanic import Sanic
 from sanic.response import json, text
+from tinydb import TinyDB, Query
+
 
 BASE_URL = 'http://todo-backend-sanic.herokuapp.com/todo'
 
@@ -76,4 +78,4 @@ async def handle_single(request, id):
     else:
         return text('GET/PATCH/DELETE', 405)
 
-app.run(host='0.0.0.0', port=80)
+app.run(host='0.0.0.0', port=int(os.environ['PORT']))
