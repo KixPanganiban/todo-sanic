@@ -5,7 +5,7 @@ from sanic.response import HTTPResponse, json, text
 from tinydb import TinyDB, Query
 
 
-BASE_URL = 'http://todo-backend-sanic.herokuapp.com/todo'
+BASE_URL = 'https://todo-backend-sanic.herokuapp.com/todo'
 
 app = Sanic('todo')
 db = TinyDB('todos.json')
